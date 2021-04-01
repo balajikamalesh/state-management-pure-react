@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react';
 
-const getStateFromLocalStorage = () => {
-    const store = localStorage.getItem('counterState');
-    if(store !== '{}') return JSON.parse(store).count;
-    return 0;
-}
-
-const storeStateFromLocalStorage = count => {
-    localStorage.setItem('counterState', JSON.stringify({ count }));
-}
+const useLocalStorage = (initialState, key) => {
+    const get = () => {
+      const storage = localStorage.getItem(key);
+      if (storage) return JSON.parse(storage).value;
+      return initialState;
+    };
+  
+    const [value, setValue] = useState(get());
+  
+    useEffect(() => {
+      localStorage.setItem(key, JSON.stringify({ value }));
+    }, [value]);
+  
+    return [value, setValue];
+  };
 
 const Counter = ({ max })=> {
-    const [ count, setCount ] = useState(getStateFromLocalStorage());
+    const [ count, setCount ] = useLocalStorage(0, 'count');
 
     useEffect(() => {
         document.title = count;
-        storeStateFromLocalStorage(count);
     }, [ count ])
 
     const incrementBy3 = () => {
