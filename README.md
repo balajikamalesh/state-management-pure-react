@@ -63,7 +63,7 @@ increment = () => {
     );
 }
 ```
-We can even store the state to local store and retrieve based on the requirement
+We can even store the state to local store and retrieve it. The state is retained on page reload.
 
 ```js
 localStorage.setItem('counterState', JSON.stringify(this.state));
@@ -77,3 +77,43 @@ const getStateFromLocalStorage = () => {
 ### setState Pattern and Anti-Pattern
 Do's
 - Is it can be computed from props or if it is not being used in the render method, don't store it in the state.
+- Create Helper methods.
+- Use Sensible defaults.
+
+Dont's
+- Don't use this.setState for derivations of props.
+
+## State in Functional Components - Hooks
+State Management in Functional Components is done by "useState" hook
+
+```js
+const [ count, setCount ] = useState(0);
+```
+
+setState is also Asynchonous in nature.
+
+```js
+increment() {
+    setCount(count + 1);
+    setCount(count + 1);
+    setCount(count + 1);
+    console.log(count); //0
+}
+```
+
+```js
+incrementBy3() {
+    setCount(cou => cou + 1 );
+    setCount(cou => cou + 1 );
+    setCount(cou => cou + 1 );
+    console.log(count); //3
+}
+```
+we can use "useEffect" to introduce side-effects into our code
+
+```js
+    useEffect(() => {
+        document.title = count;
+    }, [ count ])
+    //this will run everytime the count changes
+```
