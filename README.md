@@ -1,12 +1,12 @@
 # State Management in Pure React in Depth
---> Think Deeply about what state even means in React Applications
---> Learn about inner workings on "this.setState"
---> How State in Class-based components and hooks differ
---> Explore APIs for navigating around prop-drilling
---> Use reducers for advanced state management
---> Write custom hooks for managing state
---> Store state in local storage and URL using query parameters
---> Fetch state from server - YES! this is possible
+- Think Deeply about what state even means in React Applications
+- Learn about inner workings on "this.setState"
+- How State in Class-based components and hooks differ
+- Explore APIs for navigating around prop-drilling
+- Use reducers for advanced state management
+- Write custom hooks for managing state
+- Store state in local storage and URL using query parameters
+- Fetch state from server - YES! this is possible
 
 
 ## The main job of React is to take the application state and turn it into DOM nodes
