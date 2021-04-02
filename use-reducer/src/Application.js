@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useReducer, useCallback } from 'react';
 
 import id from 'uuid/v4';
 
@@ -24,7 +24,8 @@ const reducer = (state = initialState, action) => {
 const Application = () => {
   const [grudges, dispatch] = useReducer(reducer, initialState);
 
-  const addGrudge = ( { person, reason } ) => {
+  //use React.Memo and useCallback together to avoid rerenders
+  const addGrudge = useCallback(( { person, reason } ) => {
     dispatch({
       type: GRUDGE_ADD,
       payoad: { 
@@ -34,14 +35,14 @@ const Application = () => {
         id: id()
       }
     })
-  };
+  }, [dispatch]);
 
-  const toggleForgiveness = (id) => {
+  const toggleForgiveness = useCallback((id) => {
     dispatch({
       type: GRUDGE_FORGIVE,
       payload: { id }
     })
-  };
+  }, [dispatch]);
 
   return (
     <div className="Application">
