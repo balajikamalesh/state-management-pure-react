@@ -8,7 +8,7 @@ import endpoint from './endpoint';
 import './styles.scss';
 
 const Application = () => {
-  const [characters, loading, error] = useFetch(endpoint + '/characters', 'characters');
+  const [characters, loading, error] = useFetch(endpoint + '/characters');
 
   return (
     <div className="Application">
@@ -19,7 +19,7 @@ const Application = () => {
         <section className="sidebar">
           {
             loading ? <p>Loading....</p> : 
-                      <CharacterList characters={characters} />
+                      <CharacterList characters={characters.characters} />
           }
           {
             error && <p>Something went wrong</p>

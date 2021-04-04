@@ -1,27 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
+
+const initialState = {
+    result: null,
+    loading: true,
+    error: null
+}
+
+const fetchReducer = (state = initialState, action) => {
+    if(action.type === 'LOADING') {
+        return { ...state, 
+            response: null, 
+            loading: true, 
+            error: null 
+        }
+    } else if(action.type === 'RESPONSE_COMPLETE') {
+        return { ...state, 
+            response: action.payload.response, 
+            loading: false, 
+            error: null 
+        }
+    } else if(action.type === 'RESPONSE_FAILED') {
+        return {  ...state, 
+            response: null, 
+            loading: false, 
+            error: action.payload.error 
+        }
+    }
+    return state;
+}
 
 //custom hook for fetching data
-export default (url, key) => {
-    const [response, setResponse] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+export default (url) => {
+    const [state, dispatch] = useReducer(fetchReducer, initialState);
 
     useEffect(() => {
-      setLoading(true);
-      setResponse([]);
-      setError(null);
+        dispatch({
+            type: 'LOADING'
+        })
   
-      fetch(url)
+        fetch(url)
         .then(res => res.json())
         .then(data => {
-            setLoading(false);
-            setResponse(data[key]);
+            dispatch({
+                type: 'RESPONSE_COMPLETE',
+                payload: {
+                    response: data
+                }
+            })
         })
-        .catch(err => {
-            setLoading(false);
-            setError(err);
+        .catch(error => {
+            dispatch({
+                type: 'RESPONSE_FAILED',
+                payload: {
+                    error: error
+                }
+            })
         });
     }, [])
-  
-    return [response, loading, error];
+
+    return [state.response, state.loading, state.error];
 }
